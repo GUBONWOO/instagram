@@ -4,7 +4,7 @@ import React from 'react';
 type Props = {
   text: string;
   onClick: () => void;
-  size: 'small' | 'big';
+  size?: 'small' | 'big';
 };
 
 export default function ColorBotton({ text, onClick, size = 'small' }: Props) {
