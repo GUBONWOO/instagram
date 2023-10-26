@@ -7,9 +7,9 @@ type Props = {
   likes: string[];
   username: string;
   text: string;
-  creatAt: string;
+  createdAt: string;
 };
-export default function ActionBar({ likes, username, text, creatAt }: Props) {
+export default function ActionBar({ likes, username, text, createdAt }: Props) {
   return (
     <>
       <div className='flex justify-between my-2 px-4'>
@@ -25,7 +25,7 @@ export default function ActionBar({ likes, username, text, creatAt }: Props) {
           {text}
         </p>
         <p className='text-xs text-neutral-500 uppercase my-2'>
-          {parseDate(creatAt)}
+          {parseDate(createdAt)}
         </p>
       </div>
     </>
