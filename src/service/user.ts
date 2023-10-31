@@ -1,21 +1,22 @@
-import { SearchUser } from './../model/user';
+import { SearchUser } from '@/model/user';
 import { client } from './sanity';
 
-type oAuthUser = {
+type OAuthUser = {
   id: string;
   email: string;
   name: string;
   username: string;
   image?: string | null;
 };
-export async function addUser({ id, username, name, email, image }: oAuthUser) {
+
+export async function addUser({ id, username, email, name, image }: OAuthUser) {
   return client.createIfNotExists({
     _id: id,
     _type: 'user',
     username,
     email,
-    image,
     name,
+    image,
     following: [],
     followers: [],
     bookmarks: [],
@@ -26,11 +27,11 @@ export async function getUserByUsername(username: string) {
   return client.fetch(
     `*[_type == "user" && username == "${username}"][0]{
       ...,
-      "id":id,
+      "id":_id,
       following[]->{username,image},
       followers[]->{username,image},
       "bookmarks":bookmarks[]->_id
-}`
+    }`
   );
 }
 
@@ -40,7 +41,7 @@ export async function searchUsers(keyword?: string) {
     : '';
   return client
     .fetch(
-      `*[_type == "user" ${query}] {
+      `*[_type =="user" ${query}]{
       ...,
       "following": count(following),
       "followers": count(followers),
@@ -59,13 +60,14 @@ export async function searchUsers(keyword?: string) {
 export async function getUserForProfile(username: string) {
   return client
     .fetch(
-      `*[_type == "user" && username == "${username}"] [0] {
+      `*[_type == "user" && username == "${username}"][0]{
       ...,
       "id":_id,
       "following": count(following),
       "followers": count(followers),
       "posts": count(*[_type=="post" && author->username == "${username}"])
-    }`
+    }
+    `
     )
     .then((user) => ({
       ...user,
