@@ -1,11 +1,10 @@
 import { FullPost, SimplePost } from '@/model/post';
-import userSWR from 'swr';
-import React from 'react';
 import Image from 'next/image';
+import userSWR from 'swr';
 import ActionBar from './ActionBar';
-import PostUserAvatar from './PostUserAvatar';
-import CommentForm from './CommentForm';
 import Avatar from './Avatar';
+import CommentForm from './CommentForm';
+import PostUserAvatar from './PostUserAvatar';
 
 type Props = {
   post: SimplePost;
@@ -21,7 +20,7 @@ export default function PostDetail({ post }: Props) {
         <Image
           className='object-cover'
           src={image}
-          alt={`photo  by ${username}`}
+          alt={`photo by ${username}`}
           priority
           fill
           sizes='650px'
@@ -33,7 +32,7 @@ export default function PostDetail({ post }: Props) {
           {comments &&
             comments.map(
               ({ image, username: commentUsername, comment }, index) => (
-                <li key={index} className='flexx items-center mb-1'>
+                <li key={index} className='flex items-center mb-1'>
                   <Avatar
                     image={image}
                     size='small'
@@ -47,7 +46,7 @@ export default function PostDetail({ post }: Props) {
               )
             )}
         </ul>
-        <ActionBar likes={likes} username={username} createdAt={createdAt} />
+        <ActionBar post={post} />
         <CommentForm />
       </div>
     </section>

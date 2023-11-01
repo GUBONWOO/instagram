@@ -1,3 +1,4 @@
+import post from '../../sanity-studio/schemas/post';
 import { SimplePost } from './../model/post';
 import { client, urlFor } from './sanity';
 
@@ -75,6 +76,27 @@ export async function getSavedPostsOf(username: string) {
 function mapPosts(posts: SimplePost[]) {
   return posts.map((post: SimplePost) => ({
     ...post,
+    likes: post.likes ?? [],
     image: urlFor(post.image),
   }));
+}
+
+export async function likePost(postId: string, userId: string) {
+  return client
+    .patch(postId) //
+    .setIfMissing({ likes: [] })
+    .append('likes', [
+      {
+        _ref: userId,
+        _type: 'reference',
+      },
+    ])
+    .commit({ autoGenerateArrayKeys: true });
+}
+
+export async function dislikePost(postId: string, userId: string) {
+  return client
+    .patch(postId)
+    .unset([`likes[_ref=="${userId}"]`])
+    .commit();
 }
