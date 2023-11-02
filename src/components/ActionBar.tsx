@@ -19,14 +19,14 @@ export default function ActionBar({ post }: Props) {
   const { setLike } = usePosts();
 
   const liked = user ? likes.includes(user.username) : false;
-  const bookmarked = user?.bookmarks.includes(id) ?? false
+  const bookmarked = user?.bookmarks.includes(id) ?? false;
 
   const handleLike = (like: boolean) => {
-      user && setLike(post, user.username, like);
-    }
-    const handleBookmark = (bookmark:boolean) => {
-      user && setBookmark(id,bookmark)
-    }
+    user && setLike(post, user.username, like);
+  };
+
+  const handleBookmark = (bookmark: boolean) => {
+    user && setBookmark(id, bookmark);
   };
 
   return (
