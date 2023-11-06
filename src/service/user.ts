@@ -61,13 +61,15 @@ export async function getUserForProfile(username: string) {
   return client
     .fetch(
       `*[_type == "user" && username == "${username}"][0]{
-      ...,
-      "id":_id,
-      "following": count(following),
-      "followers": count(followers),
-      "posts": count(*[_type=="post" && author->username == "${username}"])
-    }
-    `
+        ...,
+        "id":_id,
+        "following": count(following),
+        "followers": count(followers),
+        "posts": count(*[_type=="post" && author->username == "${username}"])
+      }
+      `,
+      undefined,
+      { cache: 'no-store' }
     )
     .then((user) => ({
       ...user,
